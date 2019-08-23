@@ -1,6 +1,6 @@
 declare module '@yz1311/teaset-code-push' {
+    import {Component} from 'react';
     import {
-        Component,
         Image,
         ImageSourcePropType,
         StyleProp,
