@@ -58,12 +58,12 @@ export default CodePushHandler({isDebugMode: false})(App)
 上述的步骤做完后，虽然可能热更新，但是是静默更新，如果需要显示对话框，需要修改热更新的语句(<span style='color:red'>请注意不同操作系统的命令不一样</span>)
 windows:(参数名称和值名称前面两侧的双引号`前面`必须加单斜杠和双引号`\"`)
 
-```javascript
+```shell
 code-push release-react test-android android --t 1.0.1 --dev false -d Production --des {\""description\"":\""2019/08/22<br/><br/>1.修复bugs\"",\""isSilent\"":false}
 ```
 
 linux、mac:(整个--des的外侧需加单引号`'`)
-```javascript
+```shell
 code-push release-react test-android android --t 1.0.1 --dev false -d Production --des '{"description":"2019/08/22<br/><br/>1.修复bugs","isSilent":false}'
 ```
 
@@ -106,4 +106,4 @@ UpdateView.defaultProps.btnText = '立马更新';
 
 ### 截图
 
-![]('./screenshots/codepush-1.png')
+![](./screenshots/codepush-1.png)
