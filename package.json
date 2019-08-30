@@ -1,6 +1,6 @@
 {
   "name": "@yz1311/teaset-code-push",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "让react-native-code-push支持自定义对话框, 以及一些附带参数",
   "main": "index.js",
   "scripts": {

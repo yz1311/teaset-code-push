@@ -56,20 +56,21 @@ export default CodePushHandler({isDebugMode: false})(App)
 #### 显示更新对话框
 
 上述的步骤做完后，虽然可能热更新，但是是静默更新，如果需要显示对话框，需要修改热更新的语句(<span style='color:red'>请注意不同操作系统的命令不一样</span>)
-windows:(参数名称和值名称前面两侧的双引号`前面`必须加单斜杠和双引号`\"`)
+windows:(<span style='color:red'>参数名称和值名称`两侧`的`"`改为`\""`</span>),如下:
 
 ```shell
 code-push release-react test-android android --t 1.0.1 --dev false -d Production --des {\""description\"":\""2019/08/22<br/><br/>1.修复bugs\"",\""isSilent\"":false}
 ```
 
-linux、mac:(整个--des的外侧需加单引号`'`)
+linux、mac:(<span style='color:red'>整个--des的外侧需加单引号`'`</span>),如下:
 ```shell
 code-push release-react test-android android --t 1.0.1 --dev false -d Production --des '{"description":"2019/08/22<br/><br/>1.修复bugs","isSilent":false}'
 ```
 
 目前`description`中的内容在app上面是直接通过<WebView/>展示出来的，所以里面支持html代码,譬如换行直接`<br/>`即可
 
-跟普通的命令不同的是，现在将description变为一个json字符串，改json中有3个参数
+跟普通的命令不同的是，现在将`description`变为一个json字符串，改json中有3个参数
+
 | 属性           |     默认值     |   类型   | 描述   | 
 | :---------- | :-------------: | :------: | :---------------------------------------------------------------------------------------------------------- |
 |description||string|热更新的描述，跟以前的--des后面的内容一致,该部分的值是放在WebView中展示的，所以可以直接为html代码|
