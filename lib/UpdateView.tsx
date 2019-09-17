@@ -43,9 +43,8 @@ interface IProps {
 interface IState {}
 
 const htmlWrapper = ({message})=>{
-  //这个字体大小应该是以前webview的bug，在react-native-webview中是正常的
   return `
-  <html style="font-size: ${Platform.OS==='android'?16:PixelRatio.getPixelSizeForLayoutSize(16)}px;">${message}</html>
+  <html style="font-size: ${PixelRatio.getPixelSizeForLayoutSize(16)}px;">${message}</html>
   `;
 }
 
