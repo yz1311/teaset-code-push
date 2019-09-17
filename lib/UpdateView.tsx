@@ -13,10 +13,11 @@ import {
   StyleProp,
   ViewStyle,
   TextStyle,
-  WebView,
   Platform,
   PixelRatio
 } from "react-native";
+
+import {WebView} from 'react-native-webview';  //0.60.x，webview彻底被移除了
 
 interface IProps {
   style?: any;

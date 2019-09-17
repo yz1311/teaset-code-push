@@ -28,6 +28,8 @@
 $ npm i @yz1311/teaset-code-push --save
 ```
 
+另外,需要安装[react-native-webview]([react-native-webview](https://github.com/react-native-community/react-native-webview))组件,用于展示更新对话框的内容(如果自定义更新对话框，可以不添加该组件)
+
 ### 基础用法
 
 > 1.在根组件中设置`checkFrequency` 为 `MANUAL`
