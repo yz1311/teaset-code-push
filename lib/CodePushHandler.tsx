@@ -183,7 +183,9 @@ const decorator = (options?:IProps)=> (WrappedComponent) => {
       let localPackage: LocalPackage;
       try {
         localPackage = await updateInfo.download((progress) => {
-          console.log('codePushHandler:', progress);
+          if (this.props.isDebugMode) {
+            console.log('codePushHandler:', progress);
+          }
           this.setState({
             progress: progress.receivedBytes / progress.totalBytes
           });
@@ -198,23 +200,33 @@ const decorator = (options?:IProps)=> (WrappedComponent) => {
         }
       }
       if (localPackage) {
-        console.log('下载成功！');
+        if (this.props.isDebugMode) {
+          console.log('下载成功！');
+        }
         //只能这里关闭，后面因为app会自动重启，会失效,导致modal关闭不了
         try {
           //暂停半分钟之后应用
           await localPackage.install(updateInfo.isSilent ? codePush.InstallMode.ON_NEXT_SUSPEND : codePush.InstallMode.ON_NEXT_RESTART, 30);
-          console.log('安装成功！');
+          if (this.props.isDebugMode) {
+            console.log('安装成功！');
+          }
           await codePush.notifyAppReady();
-          this.setState({
-            modalVisible: false
-          });
+          
           if (!updateInfo.isSilent) {
             Alert.alert('提示', this.props.successAlertInfo, [{
               text: '确定',
               onPress: () => {
-                codePush.restartApp();
+                this.setState({
+                  modalVisible: false
+                },()=>{
+                  codePush.restartApp();
+                });
               }
             }], { cancelable: false });
+          } else {
+            this.setState({
+              modalVisible: false
+            });
           }
           // this.setState({modalVisible: false},()=>{
           //   codePush.restartApp();
