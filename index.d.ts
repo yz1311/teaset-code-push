@@ -41,7 +41,9 @@ declare module '@yz1311/teaset-code-push' {
 
     //自定义updateView需要实现的属性
     export interface IUpdateViewProps {
-        style?: any;
+        style?: StyleProp<ViewStyle>;
+        //对话框的borderRadius，默认值:6
+        modalBorderRadius?: number,
         width: number;
         //是否强制更新,为true时，底部的关闭按钮不显示
         isMandatory: boolean;

@@ -21,6 +21,7 @@ import {WebView} from 'react-native-webview';  //0.60.x，webview彻底被移除
 
 interface IProps {
   style?: any;
+  modalBorderRadius?: number,
   width: number;
   //是否强制更新
   isMandatory: boolean;
@@ -50,6 +51,7 @@ const htmlWrapper = ({message})=>{
 
 export default class UpdateView extends PureComponent<IProps, IState> {
   static defaultProps = {
+    modalBorderRadius: 6,
     hint: "下载后会自动重启即更新成功",
     isMandatory: false,
     btnText: '立即更新'
@@ -57,6 +59,7 @@ export default class UpdateView extends PureComponent<IProps, IState> {
 
   render() {
     const {
+      modalBorderRadius,
       width,
       message,
       progress,
@@ -67,6 +70,12 @@ export default class UpdateView extends PureComponent<IProps, IState> {
       packageSizeDesc
     } = this.props;
     const { height: D_HEIGHT, width: D_WIDTH } = Dimensions.get("window");
+    let webviewSource:any = {
+      html: htmlWrapper({message: this.props.message})
+    };
+    if(Platform.OS==='android') {
+        webviewSource.baseUrl = '';
+    }
     return (
       <View style={[{ width: width }, this.props.style]}>
           {this.props.headerImg!==undefined?
@@ -79,6 +88,7 @@ export default class UpdateView extends PureComponent<IProps, IState> {
                 borderTopLeftRadius: 8,
                 borderTopRightRadius: 8
             }}
+            imageStyle={{ borderTopLeftRadius: modalBorderRadius, borderTopRightRadius: modalBorderRadius}} 
             resizeMode="contain"
             source={this.props.headerImgSrc?this.props.headerImgSrc:require("./imgs/app_update_bg.png")}
             />
@@ -86,7 +96,7 @@ export default class UpdateView extends PureComponent<IProps, IState> {
         <View
           style={{
             backgroundColor: "#fff",
-            minHeight: D_HEIGHT * 0.35,
+            minHeight: D_HEIGHT * 0.36,
             maxHeight: D_HEIGHT * 0.6,
             paddingHorizontal: 10
           }}
@@ -96,18 +106,18 @@ export default class UpdateView extends PureComponent<IProps, IState> {
           </Text>
           <View style={{flex:1,overflow:'hidden'}}>
             <WebView
-              source={{html:htmlWrapper({message: this.props.message}), baseUrl: ''}}
+              source={webviewSource}
               automaticallyAdjustContentInsets
               // scalesPageToFit
               useWebKit={true}
               style={{flex:1}}
             />
           </View>
-          <Text style={{ fontSize: 13, color: "#999",marginBottom:10 }}>
+          <Text style={{ fontSize: 13, color: "#999",marginBottom:10, marginTop:10 }}>
             下载后会自动重启即更新成功
           </Text>
         </View>
-        <View style={{ backgroundColor: "#fff", paddingVertical: 15 }}>
+        <View style={{ backgroundColor: "#fff", paddingVertical: 15,borderBottomLeftRadius: modalBorderRadius, borderBottomRightRadius: modalBorderRadius }}>
           <TouchableOpacity
             activeOpacity={0.8}
             onPress={() => {

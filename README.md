@@ -28,7 +28,11 @@
 $ npm i @yz1311/teaset-code-push --save
 ```
 
-另外,需要安装[react-native-webview]([react-native-webview](https://github.com/react-native-community/react-native-webview))组件,用于展示更新对话框的内容(如果自定义更新对话框，可以不添加该组件)
+另外,需要安装
+
+[react-native-webview](https://github.com/react-native-community/react-native-webview): 用于展示更新对话框的内容
+
+[react-native-netinfo](https://github.com/react-native-community/react-native-netinfo): 用于检测网络状态
 
 ### 基础用法
 
@@ -57,7 +61,7 @@ export default CodePushHandler({isDebugMode: false})(App)
 
 #### 显示更新对话框
 
-上述的步骤做完后，虽然可能热更新，但是是静默更新，如果需要显示对话框，需要修改热更新的语句(<span style='color:red'>请注意不同操作系统的命令不一样</span>)
+上述的步骤做完后，虽然可以热更新，但是是静默更新，如果需要显示对话框，需要修改热更新的语句(<span style='color:red'>请注意不同操作系统的命令不一样</span>)
 windows:(<span style='color:red'>参数名称和值名称`两侧`的`"`改为`\""`</span>),如下:
 
 ```shell
@@ -110,3 +114,5 @@ UpdateView.defaultProps.btnText = '立马更新';
 ### 截图
 
 ![](./screenshots/codepush-1.png)
+
+![](https://tva1.sinaimg.cn/large/006tNbRwgy1g9smkc6uw4j30c00lxdit.jpg)
