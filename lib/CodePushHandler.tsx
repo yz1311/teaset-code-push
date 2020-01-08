@@ -3,7 +3,6 @@ import hoistNonReactStatic from 'hoist-non-react-statics';
 import { Alert, AppState, Dimensions, Modal, TouchableOpacity, View } from 'react-native';
 import codePush, { LocalPackage, RemotePackage } from 'react-native-code-push';
 import UpdateView from './UpdateView';
-import NetInfo from '@react-native-community/netinfo';
 
 /**
  * Indicates when you would like to check for (and install) updates from the CodePush server.
@@ -23,12 +22,13 @@ enum CheckFrequency {
 type myRemotePackage = RemotePackage & { desc: string, isSilent: boolean };
 
 interface IProps {
-  //仅在wifi环境下自动更新，默认false，静默更新不判断网络
-  onlyDownloadWhenWifi?: boolean,
   //检查频率,默认为resume时更新
   checkFrequency?: CheckFrequency,
   //是否为调试模式
   isDebugMode?: boolean,
+  //将要下载事件，返回值，true代表继续更新，false终止更新，默认为true
+  //譬如可以根据网络状态来控制是否更新
+  willDownload?: (packageInfo: myRemotePackage)=>boolean,
   //当前是最新版本的提示信息
   newestAlertInfo: string,
   //下载安装成功后的提示信息
@@ -51,7 +51,6 @@ interface IState {
 const decorator = (options?:IProps)=> (WrappedComponent) => {
   class HOC extends Component<IProps, IState> {
     static defaultProps = {
-      onlyDownloadWhenWifi: false,
       checkFrequency: CheckFrequency.ON_APP_RESUME,
       isDebugMode: false,
       newestAlertInfo: '已是最新版本',
@@ -144,17 +143,15 @@ const decorator = (options?:IProps)=> (WrappedComponent) => {
         } catch (e) {
           console.log(e);
         }
+        if(!(this.props.willDownload==undefined||
+          typeof this.props.willDownload != 'function' ||
+          this.props.willDownload!=undefined&&this.props.willDownload(remotePackage)==undefined||
+          this.props.willDownload(remotePackage)==true)) {
+            this.isChecking = false;
+            return;
+          }
         //静默直接下载安装
         if (remotePackage.isSilent) {
-          //判断是否是wifi环境
-          if (this.props.onlyDownloadWhenWifi) {
-            let info = await NetInfo.getConnectionInfo();
-            if (info.type !== 'wifi') {
-              console.log('do not download when not in wifi network!');
-              this.isChecking = false;
-              return;
-            }
-          }
           this.setState({
             updateInfo: remotePackage
           }, () => {

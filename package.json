@@ -1,8 +1,9 @@
 {
   "name": "@yz1311/teaset-code-push",
-  "version": "0.2.2",
+  "version": "0.3.0-beta1",
   "description": "让react-native-code-push支持自定义对话框, 以及一些附带参数",
   "main": "index.js",
+  "types": "index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "watch": "tsc -w"
@@ -31,11 +32,15 @@
     "hoist-non-react-statics": "3.3.0"
   },
   "devDependencies": {
+    "@types/react": "^16.9.17",
+    "@types/react-native": "^0.60.27",
+    "react": "~16.9.0",
+    "react-native": "~0.61.4",
+    "react-native-code-push": ">=5.6.0",
     "typescript": "^3.5.2"
   },
   "peerDependencies": {
     "react-native-code-push": ">=5.6.0",
-    "@react-native-community/netinfo": "*",
     "react-native-webview": "^6.9.0"
   }
 }
