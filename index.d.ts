@@ -38,13 +38,13 @@ export interface CodePushhandlerOptions {
     //下载安装成功后的提示信息(0.30版本中取消了弹窗模式，所以该属性已过时)
     // successAlertInfo?: string,
     //下载安装成功后，按钮的文字
-    successbtnText: string,
+    successbtnText?: string,
     //下载成功后，延迟重启的时间(单位:s)
     //分为三种情况
     //1.为null或者undefined，则不会自动重启,必须用户点击按钮才会重启
     //2.<=0,则安装完成后立即重启
     //3.>0，则在successbtnText的文字后面追加倒计时,倒计时中途用户可以点击重启，倒计时结束会自动重启
-    successDelay: number;
+    successDelay?: number;
     //替换默认的更新对话框,必须实现IUpdateViewProps相关属性
     updateView?: (props:IUpdateViewProps) => Element
 }
