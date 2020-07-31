@@ -33,6 +33,14 @@ interface IProps {
   newestAlertInfo: string,
   //下载安装成功后的提示信息
   successAlertInfo: string,
+  //下载安装成功后，按钮的文字
+  successbtnText: string,
+  //下载成功后，延迟重启的时间(单位:s)
+  //分为三种情况
+  //1.为null或者undefined，则不会自动重启,必须用户点击按钮才会重启
+  //2.<=0,则安装完成后立即重启
+  //3.>0，则在successbtnText的文字后面追加倒计时,倒计时中途用户可以点击重启，倒计时结束会自动重启
+  successDelay: number;
   //替换默认的更新对话框,必须实现IUpdateViewProps相关属性
   updateView?: (props) => Element
 }
@@ -55,10 +63,13 @@ const decorator = (options?:IProps)=> (WrappedComponent) => {
       isDebugMode: false,
       newestAlertInfo: '已是最新版本',
       successAlertInfo: '安装成功，点击[确定]后App将自动重启，重启后即更新成功！',
+      successbtnText: '立即重启APP',
+      successDelay: 5,
       failAlertInfo: ''
     };
 
     private isChecking: boolean = false;
+    private deplayInterval: any;
 
     readonly state: IState = {
       modalVisible: false,
@@ -83,7 +94,9 @@ const decorator = (options?:IProps)=> (WrappedComponent) => {
     }
 
     _handleAppStateChange = async (appState) => {
-      console.log('appstate change ' + appState);
+      if (this.props.isDebugMode) {
+        console.log('appstate change ' + appState);
+      }
       if (appState === 'active') {
         this.checkForUpdate();
         this.isChecking = false;
@@ -93,6 +106,9 @@ const decorator = (options?:IProps)=> (WrappedComponent) => {
     checkForUpdate = async () => {
       if (this.isChecking) {
         return;
+      }
+      if (this.props.isDebugMode) {
+        console.log('开始检查热更新...');
       }
       this.isChecking = true;
       let remotePackage: myRemotePackage;
@@ -174,6 +190,9 @@ const decorator = (options?:IProps)=> (WrappedComponent) => {
 
     downloadAndInstall = async () => {
       this.setState({
+        //为了显示progressDesc，必须设置一个值
+        progress: 0.01,
+        progressDesc: '准备下载...',
         isMandatory: true
       });
       const { updateInfo } = this.state;
@@ -184,11 +203,13 @@ const decorator = (options?:IProps)=> (WrappedComponent) => {
             console.log('codePushHandler:', progress);
           }
           this.setState({
+            progressDesc: '',
             progress: progress.receivedBytes / progress.totalBytes
           });
         });
       } catch (e) {
         this.setState({
+          progressDesc: '',
           modalVisible: false,
           progress: 0
         });
@@ -210,17 +231,45 @@ const decorator = (options?:IProps)=> (WrappedComponent) => {
           await codePush.notifyAppReady();
           
           if (!updateInfo.isSilent) {
-            Alert.alert('提示', this.props.successAlertInfo, [{
-              text: '确定',
-              onPress: () => {
+            //屏蔽Alert弹窗，在部分情况下(譬如刚好弹出授权弹窗),Alert会不显示，导致无法重启
+            // Alert.alert('提示', this.props.successAlertInfo, [{
+            //   text: '确定',
+            //   onPress: () => {
+            //     this.setState({
+            //       modalVisible: false
+            //     },()=>{
+            //       codePush.restartApp();
+            //     });
+            //   }
+            // }], { cancelable: false });
+            let delay = this.props.successDelay;
+            //不延迟，必须手动关闭
+            if(delay===null || delay===undefined) {
                 this.setState({
-                  modalVisible: false
-                },()=>{
-                  codePush.restartApp();
+                    progressDesc: this.props.successbtnText
                 });
-              }
-            }], { cancelable: false });
+            }
+            //不延迟，不等待用户,立马执行重启App
+            else if(delay<=0) {
+                codePush.restartApp();
+            } else {
+                this.setState({
+                    progressDesc: this.props.successbtnText+`(${delay}s)`
+                });
+                this.deplayInterval = setInterval(()=>{
+                    delay--;
+                    if(delay===0) {
+                        this.deplayInterval&&clearInterval(this.deplayInterval);
+                        codePush.restartApp();
+                    } else {
+                        this.setState({
+                            progressDesc: this.props.successbtnText+`(${delay}s)`
+                        });
+                    }
+                }, 1000);
+            }
           } else {
+            //静默模式，app在后台30s以上或者手动重启App，会自动更新
             this.setState({
               modalVisible: false
             });
@@ -248,6 +297,10 @@ const decorator = (options?:IProps)=> (WrappedComponent) => {
         packageSizeDesc: (updateInfo.packageSize / 1024 / 1024).toFixed(1) + 'MB',
         isMandatory: updateInfo.isMandatory || this.state.isMandatory,
         progressDesc: this.state.progressDesc,
+        successbtnText: this.props.successbtnText,
+        restartApp: ()=>{
+          codePush.restartApp();
+        },
         onDownload: async () => {
           this.downloadAndInstall();
         },

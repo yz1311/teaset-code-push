@@ -28,7 +28,7 @@
 该库是配合[react-native-code-push](https://github.com/microsoft/react-native-code-push)使用的
 
 ```
-$ npm i @yz1311/teaset-code-push --save
+$ npm i @yz1311/teaset-code-push@0.3.0-beta3 --save
 ```
 
 另外,需要安装
@@ -128,8 +128,18 @@ import NetInfo from '@react-native-community/netinfo';
 |isDebugMode|false|boolean|是否为调试模式|
 |willDownload|无|(packageInfo: myRemotePackage)=>boolean|将要下载事件，返回值，true代表继续更新，false终止更新，默认为true<br/>譬如可以根据网络状态来控制是否更新|
 |newestAlertInfo|已是最新版本|string|当前是最新版本的提示信息|
-|successAlertInfo|安装成功，点击[确定]后App将自动重启，重启后即更新成功！|string|下载安装成功后的提示信息|
-|updateView||(props)=>Element|替换默认的更新对话框,必须实现IUpdateViewProps相关属性|
+|~~successAlertInfo~~|~~安装成功，点击[确定]后App将自动重启，重启后即更新成功！~~|~~string~~|~~下载安装成功后的提示信息~~|
+|updateView|无|(props)=>Element|替换默认的更新对话框,必须实现IUpdateViewProps相关属性|
+|successbtnText|立即重启APP|string|下载安装成功后，按钮的文字|
+|successDelay|5|number|//下载成功后，延迟重启的时间(单位:s)|
+
+successDelay分为三种情况
+
+> 1.为null或者undefined，则不会自动重启,必须用户点击按钮才会重启
+
+> 2.<=0,则安装完成后立即重启
+ 
+> 3.>0，则在successbtnText的文字后面追加倒计时,倒计时中途用户可以点击重启，倒计时结束会自动重启
 
 
 ## 截图

@@ -1,5 +1,17 @@
+# [0.3.0-beta3]() (2020-07-31)
+* 屏蔽successAlertInfo属性，取消成功后的弹窗显示,改为直接在按钮上进行重启操作,解决[#5](https://github.com/yz1311/teaset-code-push/issues/5)
+* 按钮重启操作根据successDeplay的值三种情况
+  > 1.为null或者undefined，则不会自动重启,必须用户点击按钮才会重启
+  
+  > 2.<=0,则安装完成后立即重启
+  
+  > 3.>0，则在successbtnText的文字后面追加倒计时,倒计时中途用户可以点击重启，倒计时结束会自动重启
+* 完善isDebugMode下的日志显示
+* 开始下载后,添加`准备下载...`的文字提示，更加友好
+  
 
-# [0.3.0]() (2020-01-08)
+
+# [0.3.0-beta1]() (2020-01-08)
 # Bracking Change
 * 移除onlyDownloadWhenWifi属性，移除`@react-native-community/netinfo`组件依赖
 

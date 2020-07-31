@@ -34,11 +34,13 @@ interface IProps {
   progressDesc: string;
   onDownload: () => void;
   onIgnore: () => void;
-  headerImg?: Image,
-  headerImgSrc?: ImageSourcePropType,
-  btnContainerStyle?: StyleProp<ViewStyle>,
-  btnTextStyle?: StyleProp<TextStyle>,
-  btnText?: string
+  headerImg?: Image;
+  headerImgSrc?: ImageSourcePropType;
+  btnContainerStyle?: StyleProp<ViewStyle>;
+  btnTextStyle?: StyleProp<TextStyle>;
+  btnText?: string;
+  restartApp: ()=>void;
+  successbtnText: string;
 }
 
 interface IState {}
@@ -67,7 +69,9 @@ export default class UpdateView extends PureComponent<IProps, IState> {
       progressDesc,
       onDownload,
       onIgnore,
-      packageSizeDesc
+      packageSizeDesc,
+      restartApp,
+      successbtnText
     } = this.props;
     const { height: D_HEIGHT, width: D_WIDTH } = Dimensions.get("window");
     let webviewSource:any = {
@@ -123,6 +127,11 @@ export default class UpdateView extends PureComponent<IProps, IState> {
             onPress={() => {
               if (!this.props.progress) {
                 onDownload && onDownload();
+              } else {
+                  //必须校验文字，防止出现下载完成，但是没安装完成的情况
+                  if(progress===1&&progressDesc.indexOf(successbtnText)>=0) {
+                      restartApp&&restartApp();
+                  }
               }
             }}
             style={{
@@ -136,7 +145,8 @@ export default class UpdateView extends PureComponent<IProps, IState> {
           >
             {this.props.progress ? (
               <View style={[{ flexDirection: "row", alignItems: "center" },this.props.btnContainerStyle]}>
-                <ActivityIndicator color="#fff" />
+                {progress<1?
+                <ActivityIndicator color="#fff" />:null}
                 <Text
                   style={{
                     fontSize: 16,
