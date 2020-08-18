@@ -1,13 +1,23 @@
+# [0.3.0]() (2020-08-18)
+# Bracking Change
+* 0.3.0版本相比0.2.x版本行为模式有重大变更，请参照下面beta版本的日志
+
+## Bug Fixed
+
+* `successbtnText`字段改为`successBtnText`
+* 完善文档
+
 # [0.3.0-beta3]() (2020-07-31)
+# Bracking Change
 * 屏蔽successAlertInfo属性，取消成功后的弹窗显示,改为直接在按钮上进行重启操作,解决[#5](https://github.com/yz1311/teaset-code-push/issues/5)
 * 按钮重启操作根据successDeplay的值三种情况
   > 1.为null或者undefined，则不会自动重启,必须用户点击按钮才会重启
   
   > 2.<=0,则安装完成后立即重启
   
-  > 3.>0，则在successbtnText的文字后面追加倒计时,倒计时中途用户可以点击重启，倒计时结束会自动重启
+  > 3.>0，则在successBtnText的文字后面追加倒计时,倒计时中途用户可以点击重启，倒计时结束会自动重启
 * 完善isDebugMode下的日志显示
-* 开始下载后,添加`准备下载...`的文字提示，更加友好
+* 开始下载后,添加`准备下载...`的文字提示，更加友好(因为准备下载需要一段时间)
   
 
 

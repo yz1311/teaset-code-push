@@ -40,7 +40,7 @@ interface IProps {
   btnTextStyle?: StyleProp<TextStyle>;
   btnText?: string;
   restartApp: ()=>void;
-  successbtnText: string;
+  successBtnText: string;
 }
 
 interface IState {}
@@ -71,7 +71,7 @@ export default class UpdateView extends PureComponent<IProps, IState> {
       onIgnore,
       packageSizeDesc,
       restartApp,
-      successbtnText
+      successBtnText
     } = this.props;
     const { height: D_HEIGHT, width: D_WIDTH } = Dimensions.get("window");
     let webviewSource:any = {
@@ -129,7 +129,7 @@ export default class UpdateView extends PureComponent<IProps, IState> {
                 onDownload && onDownload();
               } else {
                   //必须校验文字，防止出现下载完成，但是没安装完成的情况
-                  if(progress===1&&progressDesc.indexOf(successbtnText)>=0) {
+                  if(progress===1&&progressDesc.indexOf(successBtnText)>=0) {
                       restartApp&&restartApp();
                   }
               }

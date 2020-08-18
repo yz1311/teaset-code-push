@@ -39,6 +39,8 @@ $ npm i @yz1311/teaset-code-push@0.3.0-beta4 --save
 
 > 1.在根组件中设置`checkFrequency` 为 `MANUAL`
 ```javascript
+import codePush from 'react-native-code-push';
+
 let codePushOptions = { checkFrequency: codePush.CheckFrequency.MANUAL};
 
 export default codePush(codePushOptions)(Root);
@@ -130,7 +132,7 @@ import NetInfo from '@react-native-community/netinfo';
 |newestAlertInfo|已是最新版本|string|当前是最新版本的提示信息|
 |~~successAlertInfo~~|~~安装成功，点击[确定]后App将自动重启，重启后即更新成功！~~|~~string~~|~~下载安装成功后的提示信息~~|
 |updateView|无|(props)=>Element|替换默认的更新对话框,必须实现IUpdateViewProps相关属性|
-|successbtnText|立即重启APP|string|下载安装成功后，按钮的文字|
+|successBtnText|立即重启APP|string|下载安装成功后，按钮的文字|
 |successDelay|5|number|//下载成功后，延迟重启的时间(单位:s)|
 
 successDelay分为三种情况
@@ -139,7 +141,14 @@ successDelay分为三种情况
 
 > 2.<=0,则安装完成后立即重启
  
-> 3.>0，则在successbtnText的文字后面追加倒计时,倒计时中途用户可以点击重启，倒计时结束会自动重启
+> 3.>0，则在successBtnText的文字后面追加倒计时,倒计时中途用户可以点击重启，倒计时结束会自动重启
+
+
+
+## 开发计划
+
+1. 由于更新过程完全是自己处理，官方的状态变更回调和下载进度回调(https://docs.microsoft.com/en-us/appcenter/distribution/codepush/rn-api-ref#code-try-5)方法不起作用了，对于部分情况下需要获取这两方面的信息，准备导出这两个事件
+
 
 
 ## 截图

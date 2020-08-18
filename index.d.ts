@@ -33,17 +33,17 @@ export interface CodePushhandlerOptions {
     //将要下载事件，返回值，true代表继续更新，false终止更新，默认为true
     //譬如可以根据网络状态来控制是否更新
     willDownload?: (packageInfo: myRemotePackage)=>boolean,
-    //当前是最新版本的提示信息
+    //当前是最新版本的提示信息(该提示信息仅在isDebugMode=true时会有弹窗提示)
     newestAlertInfo?: string,
     //下载安装成功后的提示信息(0.30版本中取消了弹窗模式，所以该属性已过时)
     // successAlertInfo?: string,
-    //下载安装成功后，按钮的文字
-    successbtnText?: string,
+    //下载安装成功后，按钮的文字, 默认为'立即重启APP'
+    successBtnText?: string,
     //下载成功后，延迟重启的时间(单位:s)
     //分为三种情况
     //1.为null或者undefined，则不会自动重启,必须用户点击按钮才会重启
     //2.<=0,则安装完成后立即重启
-    //3.>0，则在successbtnText的文字后面追加倒计时,倒计时中途用户可以点击重启，倒计时结束会自动重启
+    //3.>0，则在successBtnText的文字后面追加倒计时,倒计时中途用户可以点击重启，倒计时结束会自动重启
     successDelay?: number;
     //替换默认的更新对话框,必须实现IUpdateViewProps相关属性
     updateView?: (props:IUpdateViewProps) => Element
@@ -79,11 +79,11 @@ export interface IUpdateViewProps {
     btnTextStyle?: StyleProp<TextStyle>;
     //按钮文字
     btnText?: string;
-    //重启app
+    //重启app,调用此方法相当于调用CodePush.restartApp();来重启app
     restartApp: ()=>void;
     //下载安装成功后显示的方法
-    //可用progress===1&&progressDesc.indexOf(successbtnText)>=0来判断是否成功
-    successbtnText: string;
+    //可用progress===1&&progressDesc.indexOf(successBtnText)>=0来判断是否成功
+    successBtnText: string;
 }
 
 export class UpdateView extends Component<IUpdateViewProps,any>{

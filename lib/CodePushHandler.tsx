@@ -34,12 +34,12 @@ interface IProps {
   //下载安装成功后的提示信息
   successAlertInfo: string,
   //下载安装成功后，按钮的文字
-  successbtnText: string,
+  successBtnText: string,
   //下载成功后，延迟重启的时间(单位:s)
   //分为三种情况
   //1.为null或者undefined，则不会自动重启,必须用户点击按钮才会重启
   //2.<=0,则安装完成后立即重启
-  //3.>0，则在successbtnText的文字后面追加倒计时,倒计时中途用户可以点击重启，倒计时结束会自动重启
+  //3.>0，则在successBtnText的文字后面追加倒计时,倒计时中途用户可以点击重启，倒计时结束会自动重启
   successDelay: number;
   //替换默认的更新对话框,必须实现IUpdateViewProps相关属性
   updateView?: (props) => Element
@@ -63,7 +63,7 @@ const decorator = (options?:IProps)=> (WrappedComponent) => {
       isDebugMode: false,
       newestAlertInfo: '已是最新版本',
       successAlertInfo: '安装成功，点击[确定]后App将自动重启，重启后即更新成功！',
-      successbtnText: '立即重启APP',
+      successBtnText: '立即重启APP',
       successDelay: 5,
       failAlertInfo: ''
     };
@@ -179,7 +179,9 @@ const decorator = (options?:IProps)=> (WrappedComponent) => {
             updateInfo: remotePackage
           });
         }
-        console.log(remotePackage);
+        if (this.props.isDebugMode) {
+          console.log('安装包信息:', remotePackage);
+        }
       } else {
         if (this.props.isDebugMode) {
           Alert.alert('', this.props.newestAlertInfo);
@@ -246,7 +248,7 @@ const decorator = (options?:IProps)=> (WrappedComponent) => {
             //不延迟，必须手动关闭
             if(delay===null || delay===undefined) {
                 this.setState({
-                    progressDesc: this.props.successbtnText
+                    progressDesc: this.props.successBtnText
                 });
             }
             //不延迟，不等待用户,立马执行重启App
@@ -254,7 +256,7 @@ const decorator = (options?:IProps)=> (WrappedComponent) => {
                 codePush.restartApp();
             } else {
                 this.setState({
-                    progressDesc: this.props.successbtnText+`(${delay}s)`
+                    progressDesc: this.props.successBtnText+`(${delay}s)`
                 });
                 this.deplayInterval = setInterval(()=>{
                     delay--;
@@ -263,7 +265,7 @@ const decorator = (options?:IProps)=> (WrappedComponent) => {
                         codePush.restartApp();
                     } else {
                         this.setState({
-                            progressDesc: this.props.successbtnText+`(${delay}s)`
+                            progressDesc: this.props.successBtnText+`(${delay}s)`
                         });
                     }
                 }, 1000);
@@ -297,7 +299,7 @@ const decorator = (options?:IProps)=> (WrappedComponent) => {
         packageSizeDesc: (updateInfo.packageSize / 1024 / 1024).toFixed(1) + 'MB',
         isMandatory: updateInfo.isMandatory || this.state.isMandatory,
         progressDesc: this.state.progressDesc,
-        successbtnText: this.props.successbtnText,
+        successBtnText: this.props.successBtnText,
         restartApp: ()=>{
           codePush.restartApp();
         },
