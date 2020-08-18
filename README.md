@@ -28,7 +28,11 @@
 该库是配合[react-native-code-push](https://github.com/microsoft/react-native-code-push)使用的
 
 ```
-$ npm i @yz1311/teaset-code-push@0.3.0-beta4 --save
+$ npm i @yz1311/teaset-code-push --save
+
+或者 
+
+$ yarn add @yz1311/teaset-code-push
 ```
 
 另外,需要安装
