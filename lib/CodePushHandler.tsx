@@ -122,6 +122,10 @@ const decorator = (options?:IProps)=> (WrappedComponent) => {
         this.isChecking = false;
         return;
       }
+      //如果前面安装失败过，则忽略更新
+      if(remotePackage.failedInstall) {
+        return;
+      }
       if (remotePackage) {
         //需要检查下是否能连接到服务器，防止出现对话框但又下载失败
         //https://github.com/facebook/react-native/issues/19435
@@ -227,10 +231,15 @@ const decorator = (options?:IProps)=> (WrappedComponent) => {
         try {
           //暂停半分钟之后应用
           await localPackage.install(updateInfo.isSilent ? codePush.InstallMode.ON_NEXT_SUSPEND : codePush.InstallMode.ON_NEXT_RESTART, 30);
-          if (this.props.isDebugMode) {
-            console.log('安装成功！');
+          //安装成功后会变成isPending
+          if(localPackage.isPending) {
+            if (this.props.isDebugMode) {
+              console.log('安装成功！');
+            }
+            await codePush.notifyAppReady();
+          } else {
+            throw new Error('安装状态错误!');
           }
-          await codePush.notifyAppReady();
           
           if (!updateInfo.isSilent) {
             //屏蔽Alert弹窗，在部分情况下(譬如刚好弹出授权弹窗),Alert会不显示，导致无法重启
@@ -280,9 +289,14 @@ const decorator = (options?:IProps)=> (WrappedComponent) => {
           //   codePush.restartApp();
           // });
         } catch (e) {
-          if (!updateInfo.isSilent) {
-            Alert.alert('', '安装失败!' + e.message, [{ text: '知道了' }]);
-          }
+          //失败后关闭modal
+          this.setState({
+            modalVisible: false
+          }, ()=>{
+            if (!updateInfo.isSilent) {
+              Alert.alert('', '安装失败!' + e.message, [{ text: '知道了' }]);
+            }
+          });
         }
       }
     };
