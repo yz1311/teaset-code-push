@@ -122,11 +122,11 @@ const decorator = (options?:IProps)=> (WrappedComponent) => {
         this.isChecking = false;
         return;
       }
-      //如果前面安装失败过，则忽略更新
-      if(remotePackage.failedInstall) {
-        return;
-      }
       if (remotePackage) {
+        //如果前面安装失败过，则忽略更新
+        if(remotePackage.failedInstall) {
+          return;
+        }
         //需要检查下是否能连接到服务器，防止出现对话框但又下载失败
         //https://github.com/facebook/react-native/issues/19435
         //有bug，直接失败,暂时屏蔽
