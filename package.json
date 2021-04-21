@@ -1,6 +1,6 @@
 {
   "name": "@yz1311/teaset-code-push",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "让react-native-code-push支持自定义对话框, 以及一些附带参数",
   "main": "index.js",
   "types": "index.d.ts",
@@ -37,6 +37,7 @@
     "react": "~16.9.0",
     "react-native": "~0.61.4",
     "react-native-code-push": ">=5.6.0",
+    "react-native-webview": "^6.9.0",
     "typescript": "^3.5.2"
   },
   "peerDependencies": {

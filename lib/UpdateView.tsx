@@ -134,17 +134,17 @@ export default class UpdateView extends PureComponent<IProps, IState> {
                   }
               }
             }}
-            style={{
+            style={[{
               paddingVertical: 12,
               backgroundColor: "#f24a52",
               borderRadius: 6,
               justifyContent: "center",
               alignItems: "center",
               marginHorizontal: 15
-            }}
+            }, this.props.btnContainerStyle]}
           >
             {this.props.progress ? (
-              <View style={[{ flexDirection: "row", alignItems: "center" },this.props.btnContainerStyle]}>
+              <View style={[{ flexDirection: "row", alignItems: "center" }]}>
                 {progress<1?
                 <ActivityIndicator color="#fff" />:null}
                 <Text
