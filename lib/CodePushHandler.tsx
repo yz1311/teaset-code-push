@@ -3,11 +3,11 @@ import hoistNonReactStatic from 'hoist-non-react-statics';
 import { Alert, AppState, Dimensions, Modal, TouchableOpacity, View } from 'react-native';
 import codePush, { LocalPackage, RemotePackage } from 'react-native-code-push';
 import UpdateView from './UpdateView';
+import {CodePushhandlerOptions} from "../types/index";
 
-/**
- * Indicates when you would like to check for (and install) updates from the CodePush server.
- */
-enum CheckFrequency {
+type myRemotePackage = RemotePackage & { desc: string, isSilent: boolean };
+
+export enum CheckFrequency {
   /**
    * When the app is fully initialized (or more specifically, when the root component is mounted).
    */
@@ -17,32 +17,6 @@ enum CheckFrequency {
    * When the app re-enters the foreground.
    */
   ON_APP_RESUME,
-}
-
-type myRemotePackage = RemotePackage & { desc: string, isSilent: boolean };
-
-interface IProps {
-  //检查频率,默认为resume时更新
-  checkFrequency?: CheckFrequency,
-  //是否为调试模式
-  isDebugMode?: boolean,
-  //将要下载事件，返回值，true代表继续更新，false终止更新，默认为true
-  //譬如可以根据网络状态来控制是否更新
-  willDownload?: (packageInfo: myRemotePackage)=>boolean,
-  //当前是最新版本的提示信息
-  newestAlertInfo: string,
-  //下载安装成功后的提示信息
-  successAlertInfo: string,
-  //下载安装成功后，按钮的文字
-  successBtnText: string,
-  //下载成功后，延迟重启的时间(单位:s)
-  //分为三种情况
-  //1.为null或者undefined，则不会自动重启,必须用户点击按钮才会重启
-  //2.<=0,则安装完成后立即重启
-  //3.>0，则在successBtnText的文字后面追加倒计时,倒计时中途用户可以点击重启，倒计时结束会自动重启
-  successDelay: number;
-  //替换默认的更新对话框,必须实现IUpdateViewProps相关属性
-  updateView?: (props) => Element
 }
 
 interface IState {
@@ -56,8 +30,8 @@ interface IState {
   progressDesc: string
 }
 
-const decorator = (options?:IProps)=> (WrappedComponent) => {
-  class HOC extends Component<IProps, IState> {
+const decorator = (options?:CodePushhandlerOptions)=> (WrappedComponent) => {
+  class HOC extends Component<CodePushhandlerOptions, IState> {
     static defaultProps = {
       checkFrequency: CheckFrequency.ON_APP_RESUME,
       isDebugMode: false,

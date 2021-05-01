@@ -1,9 +1,9 @@
 {
   "name": "@yz1311/teaset-code-push",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "description": "让react-native-code-push支持自定义对话框, 以及一些附带参数",
   "main": "index.js",
-  "types": "index.d.ts",
+  "types": "./types/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "watch": "tsc -w"

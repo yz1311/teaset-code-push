@@ -130,7 +130,7 @@ import NetInfo from '@react-native-community/netinfo';
 
 | 属性           |     默认值     |   类型   | 描述   | 
 | :---------- | :-------------: | :------: | :---------------------------------------------------------------------------------------------------------- |
-|checkFrequency|ON_APP_RESUME|ennum|检查频率,默认为resume时更新|
+|checkFrequency|ON_APP_RESUME|enum|检查频率,默认为resume时更新|
 |isDebugMode|false|boolean|是否为调试模式|
 |willDownload|无|(packageInfo: myRemotePackage)=>boolean|将要下载事件，返回值，true代表继续更新，false终止更新，默认为true<br/>譬如可以根据网络状态来控制是否更新|
 |newestAlertInfo|已是最新版本|string|当前是最新版本的提示信息|

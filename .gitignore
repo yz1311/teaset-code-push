@@ -61,5 +61,5 @@ typings/
 .next
 
 
-**/*.js.map
-**/*.js
+lib/**/*.js.map
+lib/**/*.js

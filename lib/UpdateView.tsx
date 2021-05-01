@@ -16,32 +16,9 @@ import {
   Platform,
   PixelRatio
 } from "react-native";
+import {IUpdateViewProps} from '../types/index';
 
 import {WebView} from 'react-native-webview';  //0.60.x，webview彻底被移除了
-
-interface IProps {
-  style?: any;
-  modalBorderRadius?: number,
-  width: number;
-  //是否强制更新
-  isMandatory: boolean;
-  //提示，默认是热更新的提示
-  hint: string;
-  versionName?: string;
-  message: string;
-  packageSizeDesc: string;
-  progress: number;
-  progressDesc: string;
-  onDownload: () => void;
-  onIgnore: () => void;
-  headerImg?: Image;
-  headerImgSrc?: ImageSourcePropType;
-  btnContainerStyle?: StyleProp<ViewStyle>;
-  btnTextStyle?: StyleProp<TextStyle>;
-  btnText?: string;
-  restartApp: ()=>void;
-  successBtnText: string;
-}
 
 interface IState {}
 
@@ -51,7 +28,7 @@ const htmlWrapper = ({message})=>{
   `;
 }
 
-export default class UpdateView extends PureComponent<IProps, IState> {
+export default class UpdateView extends PureComponent<IUpdateViewProps, IState> {
   static defaultProps = {
     modalBorderRadius: 6,
     hint: "下载后会自动重启即更新成功",
@@ -148,11 +125,11 @@ export default class UpdateView extends PureComponent<IProps, IState> {
                 {progress<1?
                 <ActivityIndicator color="#fff" />:null}
                 <Text
-                  style={{
+                  style={[{
                     fontSize: 16,
                     color: "#fff",
                     marginLeft: 6
-                  }}
+                  }, this.props.btnTextStyle]}
                 >
                   {progressDesc
                     ? progressDesc

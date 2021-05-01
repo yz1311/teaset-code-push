@@ -8,20 +8,7 @@ import {
     TextStyle
 } from 'react-native';
 import { LocalPackage, RemotePackage } from 'react-native-code-push';
-    /**
- * Indicates when you would like to check for (and install) updates from the CodePush server.
- */
-export enum CheckFrequency {
-    /**
-     * When the app is fully initialized (or more specifically, when the root component is mounted).
-     */
-    ON_APP_START,
-
-    /**
-     * When the app re-enters the foreground.
-     */
-    ON_APP_RESUME,
-}
+export {CheckFrequency} from '../lib/CodePushHandler';
 
 export type myRemotePackage = RemotePackage & { desc: string, isSilent: boolean };
 
@@ -46,7 +33,7 @@ export interface CodePushhandlerOptions {
     //3.>0，则在successBtnText的文字后面追加倒计时,倒计时中途用户可以点击重启，倒计时结束会自动重启
     successDelay?: number;
     //替换默认的更新对话框,必须实现IUpdateViewProps相关属性
-    updateView?: (props:IUpdateViewProps) => Element
+    updateView?: (props: IUpdateViewProps) => Element
 }
 
 export function CodePushHandler(options?: CodePushhandlerOptions): (x: any) => any;
@@ -60,7 +47,7 @@ export interface IUpdateViewProps {
     //是否强制更新,为true时，底部的关闭按钮不显示
     isMandatory: boolean;
     //提示，默认是热更新的提示
-    hint: string;
+    hint?: string;
     versionName?: string;
     message: string;
     packageSizeDesc: string;
@@ -71,7 +58,7 @@ export interface IUpdateViewProps {
     onDownload: () => void;
     //点击底部的关闭按钮回调事件
     onIgnore: () => void;
-    headerImg: Image;
+    headerImg?: Image;
     headerImgSrc?: ImageSourcePropType;
     //按钮容器样式
     btnContainerStyle?: StyleProp<ViewStyle>;
