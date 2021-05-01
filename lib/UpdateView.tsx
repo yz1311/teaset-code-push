@@ -123,7 +123,8 @@ export default class UpdateView extends PureComponent<IUpdateViewProps, IState> 
             {this.props.progress ? (
               <View style={[{ flexDirection: "row", alignItems: "center" }]}>
                 {progress<1?
-                <ActivityIndicator color="#fff" />:null}
+                //@ts-ignore
+                <ActivityIndicator color={(this.props.btnTextStyle?.color) || '#fff'} />:null}
                 <Text
                   style={[{
                     fontSize: 16,
