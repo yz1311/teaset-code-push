@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import hoistNonReactStatic from 'hoist-non-react-statics';
-import { Alert, AppState, Dimensions, Modal, TouchableOpacity, View } from 'react-native';
+import {Alert, AppState, Dimensions, Modal, NativeEventSubscription, TouchableOpacity, View} from 'react-native';
 import codePush, { LocalPackage, RemotePackage } from 'react-native-code-push';
 import UpdateView from './UpdateView';
 import {CodePushhandlerOptions} from "../types/index";
@@ -44,6 +44,7 @@ const decorator = (options?:CodePushhandlerOptions)=> (WrappedComponent) => {
 
     private isChecking: boolean = false;
     private deplayInterval: any;
+    private appStateListener:NativeEventSubscription;
 
     readonly state: IState = {
       modalVisible: false,
@@ -55,7 +56,8 @@ const decorator = (options?:CodePushhandlerOptions)=> (WrappedComponent) => {
 
     componentDidMount(): void {
       if (this.props.checkFrequency === CheckFrequency.ON_APP_RESUME) {
-        AppState.addEventListener('change', this._handleAppStateChange);
+        //@ts-ignore
+        this.appStateListener = AppState.addEventListener('change', this._handleAppStateChange);
       }
       this.checkForUpdate();
       this.isChecking = false;
@@ -63,7 +65,8 @@ const decorator = (options?:CodePushhandlerOptions)=> (WrappedComponent) => {
 
     componentWillUnmount(): void {
       if (this.props.checkFrequency === CheckFrequency.ON_APP_RESUME) {
-        AppState.removeEventListener('change', this._handleAppStateChange);
+        //兼容RN0.69.x
+        this.appStateListener && this.appStateListener.remove ? this.appStateListener.remove() : AppState.removeEventListener('change', this._handleAppStateChange);
       }
     }
 
