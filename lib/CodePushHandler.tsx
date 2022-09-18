@@ -66,6 +66,7 @@ const decorator = (options?:CodePushhandlerOptions)=> (WrappedComponent) => {
     componentWillUnmount(): void {
       if (this.props.checkFrequency === CheckFrequency.ON_APP_RESUME) {
         //兼容RN0.69.x
+        //@ts-ignore
         this.appStateListener && this.appStateListener.remove ? this.appStateListener.remove() : AppState.removeEventListener('change', this._handleAppStateChange);
       }
     }
